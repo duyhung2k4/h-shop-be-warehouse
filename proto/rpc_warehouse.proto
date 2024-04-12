@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "gprc/proto";
+
+message InsertWarehouseReq {
+  string productId = 1;
+}
+message InsertWarehouseRes {
+  uint64 id = 1;
+  string productId = 2;
+}
+
+service WarehouseService {
+  rpc InsertWarehouse(InsertWarehouseReq) returns (InsertWarehouseRes) {}
+}
