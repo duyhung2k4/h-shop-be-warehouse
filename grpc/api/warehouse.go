@@ -26,6 +26,7 @@ func (g *warehouseGRPC) InsertWarehouse(ctx context.Context, req *proto.InsertWa
 	res := &proto.InsertWarehouseRes{
 		Id:        uint64(newWarehouse.ID),
 		ProductId: newWarehouse.ProductId,
+		Count:     uint64(newWarehouse.Count),
 	}
 
 	return res, nil

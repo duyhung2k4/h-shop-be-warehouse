@@ -10,6 +10,7 @@ message InsertWarehouseReq {
 message InsertWarehouseRes {
   uint64 id = 1;
   string productId = 2;
+  uint64 count = 3;
 }
 
 service WarehouseService {
