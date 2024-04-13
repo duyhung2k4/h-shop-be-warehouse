@@ -2,6 +2,7 @@ package main
 
 import (
 	"app/config"
+	"app/grpc"
 	"app/router"
 	"log"
 	"net/http"
@@ -11,7 +12,12 @@ import (
 
 func main() {
 	var wg sync.WaitGroup
-	wg.Add(1)
+	wg.Add(2)
+
+	go func() {
+		grpc.RunServerGRPC()
+		wg.Done()
+	}()
 
 	go func() {
 		server := http.Server{

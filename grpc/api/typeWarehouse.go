@@ -11,7 +11,7 @@ import (
 
 type typeWarehouseGRPC struct {
 	db *gorm.DB
-	proto.UnsafeTypeWarehouseServiceServer
+	proto.UnsafeTypeInWarehouseServiceServer
 }
 
 func (g *typeWarehouseGRPC) Insert(ctx context.Context, req *proto.InsertTypeInWarehouseReq) (*proto.InsertTypeInWarehouseRes, error) {
@@ -73,7 +73,7 @@ func (g *typeWarehouseGRPC) DownCount(ctx context.Context, req *proto.DownCountT
 	return nil, nil
 }
 
-func NewTypeWarehouseGRPC() proto.TypeWarehouseServiceServer {
+func NewTypeInWarehouseGRPC() proto.TypeInWarehouseServiceServer {
 	return &typeWarehouseGRPC{
 		db: config.GetDB(),
 	}

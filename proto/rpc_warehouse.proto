@@ -88,7 +88,7 @@ message DownCountTypeInWarehouseRes {
     uint64 count = 3;
 }
 
-service TypeWarehouseService {
+service TypeInWarehouseService {
     rpc Insert(InsertTypeInWarehouseReq) returns (InsertTypeInWarehouseRes) {}
     rpc Update(UpdateTypeInWarehouseReq) returns (UpdateTypeInWarehouseRes) {}
     rpc UpCount(UpCountTypeInWarehouseReq) returns (UpCountTypeInWarehouseRes) {}
