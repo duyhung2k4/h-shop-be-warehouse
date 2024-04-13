@@ -9,5 +9,5 @@ type TypeInWarehouse struct {
 	Hastag      string  `json:"hastag" gorm:"uniqueIndex:idx_wh_ht"`
 	Name        string  `json:"name"`
 	Price       float64 `json:"price"`
-	Count       uint    `json:"count"`
+	Count       uint    `json:"count" gorm:"check:check_count, count >= 0"`
 }

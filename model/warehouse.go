@@ -7,7 +7,7 @@ import (
 type Warehouse struct {
 	gorm.Model
 	ProductId string `json:"productId"`
-	Count     uint   `json:"count" gorm:"default:0"`
+	Count     uint   `json:"count" gorm:"default:0;check:check_count, count >= 0"`
 
 	TypeInWarehouses []TypeInWarehouse `json:"typeInWarehouses" gorm:"foreignKey:WarehouseId"`
 }
