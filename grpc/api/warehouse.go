@@ -57,7 +57,7 @@ func (g *warehouseGRPC) UpCount(ctx context.Context, req *proto.UpCountWarehouse
 	if err := g.db.
 		Model(&model.Warehouse{}).
 		Where("id = ?", req.Id).
-		UpdateColumn("count", gorm.Expr("count + ?", 1)).Error; err != nil {
+		UpdateColumn("count", gorm.Expr("count + ?", req.Amount)).Error; err != nil {
 		return nil, err
 	}
 	return nil, nil
@@ -67,7 +67,7 @@ func (g *warehouseGRPC) DownCount(ctx context.Context, req *proto.DownCountWareh
 	if err := g.db.
 		Model(&model.Warehouse{}).
 		Where("id = ?", req.Id).
-		UpdateColumn("count", gorm.Expr("count - ?", 1)).Error; err != nil {
+		UpdateColumn("count", gorm.Expr("count - ?", req.Amount)).Error; err != nil {
 		return nil, err
 	}
 	return nil, nil
