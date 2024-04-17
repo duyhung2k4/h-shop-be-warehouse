@@ -29,6 +29,7 @@ func RunServerGRPC() {
 	grpcServer := grpc.NewServer(grpc.Creds(creds))
 	proto.RegisterWarehouseServiceServer(grpcServer, api.NewWarehouseGRPC())
 	proto.RegisterTypeInWarehouseServiceServer(grpcServer, api.NewTypeInWarehouseGRPC())
+	proto.RegisterCountPriceServiceServer(grpcServer, api.NewCountPriceGRPC())
 
 	log.Fatalln(grpcServer.Serve(listenerGRPC))
 }

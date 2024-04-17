@@ -7,15 +7,15 @@ import (
 	"google.golang.org/grpc/credentials"
 )
 
-func connectGPRCServerFile() {
+func connectGPRCServerProduct() {
 	var errConn error
 
-	creds, errKey := credentials.NewClientTLSFromFile("keys/server-file/public.pem", "localhost")
+	creds, errKey := credentials.NewClientTLSFromFile("keys/server-product/public.pem", "localhost")
 	if errKey != nil {
 		log.Fatalln(errKey)
 	}
 
-	clientFile, errConn = grpc.Dial(host+":20004", grpc.WithTransportCredentials(creds))
+	clientProduct, errConn = grpc.Dial(host+":20003", grpc.WithTransportCredentials(creds))
 	if errConn != nil {
 		log.Fatalln(errConn)
 	}

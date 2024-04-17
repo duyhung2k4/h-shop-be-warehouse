@@ -100,7 +100,7 @@ service TypeInWarehouseService {
 }
 
 message Order {
-    uint64 productId = 1;
+    string productId = 1;
     uint64 warehouseId = 2;
     uint64 typeInWarehouseId = 3;
     uint64 amount = 4;

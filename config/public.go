@@ -23,8 +23,8 @@ func GetJWT() *jwtauth.JWTAuth {
 	return jwt
 }
 
-func GetConnFileGRPC() *grpc.ClientConn {
-	return clientFile
+func GetConnProductGRPC() *grpc.ClientConn {
+	return clientProduct
 }
 
 func GetHost() string {
