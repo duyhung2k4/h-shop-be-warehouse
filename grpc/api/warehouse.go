@@ -39,7 +39,7 @@ func (g *warehouseGRPC) Update(ctx context.Context, req *proto.UpdateWarehouseRe
 
 	if err := g.db.
 		Model(&model.Warehouse{}).
-		Where("id = ? AND product_id = ?", req.Id).
+		Where("id = ?", req.Id).
 		Updates(&newWarehouse).Error; err != nil {
 		return nil, err
 	}
