@@ -5,6 +5,7 @@ import (
 	"app/grpc/proto"
 	"app/model"
 	"context"
+	"log"
 	"sync"
 
 	"gorm.io/gorm"
@@ -46,6 +47,7 @@ func (g *countPriceGRPC) CountPriceOrder(ctx context.Context, req *proto.CountPr
 	for _, item := range req.Orders {
 		wg.Add(1)
 		go func(order *proto.Order) {
+			log.Println(order)
 			if order.TypeInWarehouseId == 0 {
 				var warehouse *model.Warehouse
 				err := g.db.
