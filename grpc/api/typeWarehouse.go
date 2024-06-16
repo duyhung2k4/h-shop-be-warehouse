@@ -15,8 +15,20 @@ type typeWarehouseGRPC struct {
 }
 
 func (g *typeWarehouseGRPC) Insert(ctx context.Context, req *proto.InsertTypeInWarehouseReq) (*proto.InsertTypeInWarehouseRes, error) {
+	var warehouse *model.Warehouse
+	if err := g.db.Model(&model.Warehouse{}).Where("product_id = ?", req.ProductId).Find(&warehouse).Error; err != nil {
+		return nil, err
+	}
 	var newWarehouse = model.TypeInWarehouse{
-		ProductId: req.ProductId,
+		WarehouseId: warehouse.ID,
+		ProductId:   req.ProductId,
+		Name:        req.Name,
+		Hastag:      req.HasTag,
+		Count:       uint(req.Count),
+	}
+	if req.Price != 0 {
+		var price float64 = float64(req.Price)
+		newWarehouse.Price = &price
 	}
 
 	if err := g.db.Model(&model.TypeInWarehouse{}).Create(&newWarehouse).Error; err != nil {
