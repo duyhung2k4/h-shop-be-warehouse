@@ -81,3 +81,17 @@ message Product {
     string id = 1;
     float price = 2;
 }
+
+message TypeInWarehouse {
+    uint64 id = 1;
+	string productId = 2;
+	uint64 warehouseId = 3;
+	string hastag = 4;
+	string name = 5;
+	float price = 6;
+	uint64 count = 7;
+
+    int64 createdAt = 8;
+	int64 updatedAt = 9;
+	int64 deletedAt = 10;
+}

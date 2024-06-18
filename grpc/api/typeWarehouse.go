@@ -5,6 +5,7 @@ import (
 	"app/grpc/proto"
 	"app/model"
 	"context"
+	"log"
 
 	"gorm.io/gorm"
 )
@@ -12,6 +13,38 @@ import (
 type typeWarehouseGRPC struct {
 	db *gorm.DB
 	proto.UnsafeTypeInWarehouseServiceServer
+}
+
+func (g *typeWarehouseGRPC) GetTypeInWarehouseByProductId(ctx context.Context, req *proto.GetTypeInWarehouseByProductIdReq) (*proto.GetTypeInWarehouseByProductIdRes, error) {
+	log.Println("id: ", req.ProductId)
+	var typeInWarehouses []model.TypeInWarehouse
+
+	if err := g.db.Model(&model.TypeInWarehouse{}).Where("product_id = ?", req.ProductId).Find(&typeInWarehouses).Error; err != nil {
+		return nil, err
+	}
+
+	data := []*proto.TypeInWarehouse{}
+
+	for _, item := range typeInWarehouses {
+		data = append(data, &proto.TypeInWarehouse{
+			Id:          uint64(item.ID),
+			ProductId:   item.ProductId,
+			WarehouseId: uint64(item.WarehouseId),
+			Hastag:      item.Hastag,
+			Name:        item.Name,
+			Price:       float32(*item.Price),
+			Count:       uint64(item.Count),
+			CreatedAt:   item.CreatedAt.Unix(),
+			DeletedAt:   item.DeletedAt.Time.Unix(),
+			UpdatedAt:   item.UpdatedAt.Unix(),
+		})
+	}
+
+	res := proto.GetTypeInWarehouseByProductIdRes{
+		Data: data,
+	}
+
+	return &res, nil
 }
 
 func (g *typeWarehouseGRPC) Insert(ctx context.Context, req *proto.InsertTypeInWarehouseReq) (*proto.InsertTypeInWarehouseRes, error) {

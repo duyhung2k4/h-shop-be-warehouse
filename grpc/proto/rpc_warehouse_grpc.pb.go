@@ -216,6 +216,7 @@ var WarehouseService_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TypeInWarehouseServiceClient interface {
+	GetTypeInWarehouseByProductId(ctx context.Context, in *GetTypeInWarehouseByProductIdReq, opts ...grpc.CallOption) (*GetTypeInWarehouseByProductIdRes, error)
 	Insert(ctx context.Context, in *InsertTypeInWarehouseReq, opts ...grpc.CallOption) (*InsertTypeInWarehouseRes, error)
 	Update(ctx context.Context, in *UpdateTypeInWarehouseReq, opts ...grpc.CallOption) (*UpdateTypeInWarehouseRes, error)
 	UpCount(ctx context.Context, in *UpCountTypeInWarehouseReq, opts ...grpc.CallOption) (*UpCountTypeInWarehouseRes, error)
@@ -228,6 +229,15 @@ type typeInWarehouseServiceClient struct {
 
 func NewTypeInWarehouseServiceClient(cc grpc.ClientConnInterface) TypeInWarehouseServiceClient {
 	return &typeInWarehouseServiceClient{cc}
+}
+
+func (c *typeInWarehouseServiceClient) GetTypeInWarehouseByProductId(ctx context.Context, in *GetTypeInWarehouseByProductIdReq, opts ...grpc.CallOption) (*GetTypeInWarehouseByProductIdRes, error) {
+	out := new(GetTypeInWarehouseByProductIdRes)
+	err := c.cc.Invoke(ctx, "/proto.TypeInWarehouseService/GetTypeInWarehouseByProductId", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *typeInWarehouseServiceClient) Insert(ctx context.Context, in *InsertTypeInWarehouseReq, opts ...grpc.CallOption) (*InsertTypeInWarehouseRes, error) {
@@ -270,6 +280,7 @@ func (c *typeInWarehouseServiceClient) DownCount(ctx context.Context, in *DownCo
 // All implementations must embed UnimplementedTypeInWarehouseServiceServer
 // for forward compatibility
 type TypeInWarehouseServiceServer interface {
+	GetTypeInWarehouseByProductId(context.Context, *GetTypeInWarehouseByProductIdReq) (*GetTypeInWarehouseByProductIdRes, error)
 	Insert(context.Context, *InsertTypeInWarehouseReq) (*InsertTypeInWarehouseRes, error)
 	Update(context.Context, *UpdateTypeInWarehouseReq) (*UpdateTypeInWarehouseRes, error)
 	UpCount(context.Context, *UpCountTypeInWarehouseReq) (*UpCountTypeInWarehouseRes, error)
@@ -281,6 +292,9 @@ type TypeInWarehouseServiceServer interface {
 type UnimplementedTypeInWarehouseServiceServer struct {
 }
 
+func (UnimplementedTypeInWarehouseServiceServer) GetTypeInWarehouseByProductId(context.Context, *GetTypeInWarehouseByProductIdReq) (*GetTypeInWarehouseByProductIdRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTypeInWarehouseByProductId not implemented")
+}
 func (UnimplementedTypeInWarehouseServiceServer) Insert(context.Context, *InsertTypeInWarehouseReq) (*InsertTypeInWarehouseRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
 }
@@ -305,6 +319,24 @@ type UnsafeTypeInWarehouseServiceServer interface {
 
 func RegisterTypeInWarehouseServiceServer(s grpc.ServiceRegistrar, srv TypeInWarehouseServiceServer) {
 	s.RegisterService(&TypeInWarehouseService_ServiceDesc, srv)
+}
+
+func _TypeInWarehouseService_GetTypeInWarehouseByProductId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTypeInWarehouseByProductIdReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TypeInWarehouseServiceServer).GetTypeInWarehouseByProductId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.TypeInWarehouseService/GetTypeInWarehouseByProductId",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TypeInWarehouseServiceServer).GetTypeInWarehouseByProductId(ctx, req.(*GetTypeInWarehouseByProductIdReq))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _TypeInWarehouseService_Insert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -386,6 +418,10 @@ var TypeInWarehouseService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "proto.TypeInWarehouseService",
 	HandlerType: (*TypeInWarehouseServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetTypeInWarehouseByProductId",
+			Handler:    _TypeInWarehouseService_GetTypeInWarehouseByProductId_Handler,
+		},
 		{
 			MethodName: "Insert",
 			Handler:    _TypeInWarehouseService_Insert_Handler,
