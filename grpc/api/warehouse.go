@@ -14,6 +14,25 @@ type warehouseGRPC struct {
 	proto.UnsafeWarehouseServiceServer
 }
 
+func (g *warehouseGRPC) GetWarehouseByProductId(ctx context.Context, req *proto.GetWarehouseByProductIdReq) (*proto.GetWarehouseByProductIdRes, error) {
+	var warehouse *model.Warehouse
+
+	if err := g.db.Model(&model.Warehouse{}).Where("product_id = ?", req.ProductId).First(&warehouse).Error; err != nil {
+		return nil, err
+	}
+
+	res := proto.GetWarehouseByProductIdRes{
+		Id:        uint64(warehouse.ID),
+		ProductId: warehouse.ProductId,
+		Count:     uint64(warehouse.Count),
+		CreatedAt: warehouse.CreatedAt.Unix(),
+		UpdatedAt: warehouse.UpdatedAt.Unix(),
+		DeletedAt: warehouse.DeletedAt.Time.Unix(),
+	}
+
+	return &res, nil
+}
+
 func (g *warehouseGRPC) Insert(ctx context.Context, req *proto.InsertWarehouseReq) (*proto.InsertWarehouseRes, error) {
 	var newWarehouse = model.Warehouse{
 		ProductId: req.ProductId,

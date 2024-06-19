@@ -22,6 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type WarehouseServiceClient interface {
+	GetWarehouseByProductId(ctx context.Context, in *GetWarehouseByProductIdReq, opts ...grpc.CallOption) (*GetWarehouseByProductIdRes, error)
 	Insert(ctx context.Context, in *InsertWarehouseReq, opts ...grpc.CallOption) (*InsertWarehouseRes, error)
 	Update(ctx context.Context, in *UpdateWarehouseReq, opts ...grpc.CallOption) (*UpdateWarehouseRes, error)
 	UpCount(ctx context.Context, in *UpCountWarehouseReq, opts ...grpc.CallOption) (*UpCountWarehouseRes, error)
@@ -34,6 +35,15 @@ type warehouseServiceClient struct {
 
 func NewWarehouseServiceClient(cc grpc.ClientConnInterface) WarehouseServiceClient {
 	return &warehouseServiceClient{cc}
+}
+
+func (c *warehouseServiceClient) GetWarehouseByProductId(ctx context.Context, in *GetWarehouseByProductIdReq, opts ...grpc.CallOption) (*GetWarehouseByProductIdRes, error) {
+	out := new(GetWarehouseByProductIdRes)
+	err := c.cc.Invoke(ctx, "/proto.WarehouseService/GetWarehouseByProductId", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *warehouseServiceClient) Insert(ctx context.Context, in *InsertWarehouseReq, opts ...grpc.CallOption) (*InsertWarehouseRes, error) {
@@ -76,6 +86,7 @@ func (c *warehouseServiceClient) DownCount(ctx context.Context, in *DownCountWar
 // All implementations must embed UnimplementedWarehouseServiceServer
 // for forward compatibility
 type WarehouseServiceServer interface {
+	GetWarehouseByProductId(context.Context, *GetWarehouseByProductIdReq) (*GetWarehouseByProductIdRes, error)
 	Insert(context.Context, *InsertWarehouseReq) (*InsertWarehouseRes, error)
 	Update(context.Context, *UpdateWarehouseReq) (*UpdateWarehouseRes, error)
 	UpCount(context.Context, *UpCountWarehouseReq) (*UpCountWarehouseRes, error)
@@ -87,6 +98,9 @@ type WarehouseServiceServer interface {
 type UnimplementedWarehouseServiceServer struct {
 }
 
+func (UnimplementedWarehouseServiceServer) GetWarehouseByProductId(context.Context, *GetWarehouseByProductIdReq) (*GetWarehouseByProductIdRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWarehouseByProductId not implemented")
+}
 func (UnimplementedWarehouseServiceServer) Insert(context.Context, *InsertWarehouseReq) (*InsertWarehouseRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
 }
@@ -110,6 +124,24 @@ type UnsafeWarehouseServiceServer interface {
 
 func RegisterWarehouseServiceServer(s grpc.ServiceRegistrar, srv WarehouseServiceServer) {
 	s.RegisterService(&WarehouseService_ServiceDesc, srv)
+}
+
+func _WarehouseService_GetWarehouseByProductId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWarehouseByProductIdReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WarehouseServiceServer).GetWarehouseByProductId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.WarehouseService/GetWarehouseByProductId",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WarehouseServiceServer).GetWarehouseByProductId(ctx, req.(*GetWarehouseByProductIdReq))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _WarehouseService_Insert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -191,6 +223,10 @@ var WarehouseService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "proto.WarehouseService",
 	HandlerType: (*WarehouseServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetWarehouseByProductId",
+			Handler:    _WarehouseService_GetWarehouseByProductId_Handler,
+		},
 		{
 			MethodName: "Insert",
 			Handler:    _WarehouseService_Insert_Handler,

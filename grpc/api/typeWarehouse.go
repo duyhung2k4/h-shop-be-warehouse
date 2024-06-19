@@ -5,7 +5,6 @@ import (
 	"app/grpc/proto"
 	"app/model"
 	"context"
-	"log"
 
 	"gorm.io/gorm"
 )
@@ -16,7 +15,6 @@ type typeWarehouseGRPC struct {
 }
 
 func (g *typeWarehouseGRPC) GetTypeInWarehouseByProductId(ctx context.Context, req *proto.GetTypeInWarehouseByProductIdReq) (*proto.GetTypeInWarehouseByProductIdRes, error) {
-	log.Println("id: ", req.ProductId)
 	var typeInWarehouses []model.TypeInWarehouse
 
 	if err := g.db.Model(&model.TypeInWarehouse{}).Where("product_id = ?", req.ProductId).Find(&typeInWarehouses).Error; err != nil {

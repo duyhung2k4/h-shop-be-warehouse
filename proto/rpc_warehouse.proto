@@ -7,6 +7,19 @@ import "proto/model.proto";
 option go_package = "grpc/proto";
 
 // Warehouse
+message GetWarehouseByProductIdReq {
+    string productId = 1;
+}
+message GetWarehouseByProductIdRes {
+    uint64 id = 1;
+    string productId = 2;
+    uint64 count = 3;
+    
+	int64 createdAt = 4;
+	int64 updatedAt = 5;
+	int64 deletedAt = 6;
+}
+
 message InsertWarehouseReq {
     string productId = 1;
 }
@@ -47,6 +60,7 @@ message DownCountWarehouseRes {
 }
 
 service WarehouseService {
+    rpc GetWarehouseByProductId(GetWarehouseByProductIdReq) returns (GetWarehouseByProductIdRes) {}
     rpc Insert(InsertWarehouseReq) returns (InsertWarehouseRes) {}
     rpc Update(UpdateWarehouseReq) returns (UpdateWarehouseRes) {}
     rpc UpCount(UpCountWarehouseReq) returns (UpCountWarehouseRes) {}
