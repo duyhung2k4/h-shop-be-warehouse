@@ -255,6 +255,7 @@ type TypeInWarehouseServiceClient interface {
 	GetTypeInWarehouseByProductId(ctx context.Context, in *GetTypeInWarehouseByProductIdReq, opts ...grpc.CallOption) (*GetTypeInWarehouseByProductIdRes, error)
 	Insert(ctx context.Context, in *InsertTypeInWarehouseReq, opts ...grpc.CallOption) (*InsertTypeInWarehouseRes, error)
 	Update(ctx context.Context, in *UpdateTypeInWarehouseReq, opts ...grpc.CallOption) (*UpdateTypeInWarehouseRes, error)
+	Delete(ctx context.Context, in *DeleteTypeInWarehouseReq, opts ...grpc.CallOption) (*DeleteTypeInWarehouseRes, error)
 	UpCount(ctx context.Context, in *UpCountTypeInWarehouseReq, opts ...grpc.CallOption) (*UpCountTypeInWarehouseRes, error)
 	DownCount(ctx context.Context, in *DownCountTypeInWarehouseReq, opts ...grpc.CallOption) (*DownCountTypeInWarehouseRes, error)
 }
@@ -294,6 +295,15 @@ func (c *typeInWarehouseServiceClient) Update(ctx context.Context, in *UpdateTyp
 	return out, nil
 }
 
+func (c *typeInWarehouseServiceClient) Delete(ctx context.Context, in *DeleteTypeInWarehouseReq, opts ...grpc.CallOption) (*DeleteTypeInWarehouseRes, error) {
+	out := new(DeleteTypeInWarehouseRes)
+	err := c.cc.Invoke(ctx, "/proto.TypeInWarehouseService/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *typeInWarehouseServiceClient) UpCount(ctx context.Context, in *UpCountTypeInWarehouseReq, opts ...grpc.CallOption) (*UpCountTypeInWarehouseRes, error) {
 	out := new(UpCountTypeInWarehouseRes)
 	err := c.cc.Invoke(ctx, "/proto.TypeInWarehouseService/UpCount", in, out, opts...)
@@ -319,6 +329,7 @@ type TypeInWarehouseServiceServer interface {
 	GetTypeInWarehouseByProductId(context.Context, *GetTypeInWarehouseByProductIdReq) (*GetTypeInWarehouseByProductIdRes, error)
 	Insert(context.Context, *InsertTypeInWarehouseReq) (*InsertTypeInWarehouseRes, error)
 	Update(context.Context, *UpdateTypeInWarehouseReq) (*UpdateTypeInWarehouseRes, error)
+	Delete(context.Context, *DeleteTypeInWarehouseReq) (*DeleteTypeInWarehouseRes, error)
 	UpCount(context.Context, *UpCountTypeInWarehouseReq) (*UpCountTypeInWarehouseRes, error)
 	DownCount(context.Context, *DownCountTypeInWarehouseReq) (*DownCountTypeInWarehouseRes, error)
 	mustEmbedUnimplementedTypeInWarehouseServiceServer()
@@ -336,6 +347,9 @@ func (UnimplementedTypeInWarehouseServiceServer) Insert(context.Context, *Insert
 }
 func (UnimplementedTypeInWarehouseServiceServer) Update(context.Context, *UpdateTypeInWarehouseReq) (*UpdateTypeInWarehouseRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedTypeInWarehouseServiceServer) Delete(context.Context, *DeleteTypeInWarehouseReq) (*DeleteTypeInWarehouseRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 func (UnimplementedTypeInWarehouseServiceServer) UpCount(context.Context, *UpCountTypeInWarehouseReq) (*UpCountTypeInWarehouseRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpCount not implemented")
@@ -411,6 +425,24 @@ func _TypeInWarehouseService_Update_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TypeInWarehouseService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteTypeInWarehouseReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TypeInWarehouseServiceServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.TypeInWarehouseService/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TypeInWarehouseServiceServer).Delete(ctx, req.(*DeleteTypeInWarehouseReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _TypeInWarehouseService_UpCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpCountTypeInWarehouseReq)
 	if err := dec(in); err != nil {
@@ -465,6 +497,10 @@ var TypeInWarehouseService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Update",
 			Handler:    _TypeInWarehouseService_Update_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _TypeInWarehouseService_Delete_Handler,
 		},
 		{
 			MethodName: "UpCount",

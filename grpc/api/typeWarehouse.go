@@ -77,23 +77,43 @@ func (g *typeWarehouseGRPC) Insert(ctx context.Context, req *proto.InsertTypeInW
 
 func (g *typeWarehouseGRPC) Update(ctx context.Context, req *proto.UpdateTypeInWarehouseReq) (*proto.UpdateTypeInWarehouseRes, error) {
 	newWarehouse := model.TypeInWarehouse{
-		Count: uint(req.Count),
+		Count:  uint(req.Count),
+		Name:   req.Name,
+		Hastag: req.Hastag,
+	}
+
+	if req.Price != 0 {
+		price := float64(req.Price)
+		newWarehouse.Price = &price
 	}
 
 	if err := g.db.
 		Model(&model.TypeInWarehouse{}).
-		Where("id = ? AND product_id = ?", req.Id).
+		Where("id = ?", req.Id).
 		Updates(&newWarehouse).Error; err != nil {
 		return nil, err
 	}
 
 	res := &proto.UpdateTypeInWarehouseRes{
-		Id:        uint64(newWarehouse.ID),
+		Id:        uint64(req.Id),
 		ProductId: newWarehouse.ProductId,
 		Count:     uint64(newWarehouse.Count),
+		Price:     float32(*newWarehouse.Price),
+		Name:      newWarehouse.Name,
+		Hastag:    newWarehouse.Hastag,
 	}
 
 	return res, nil
+}
+
+func (g *typeWarehouseGRPC) Delete(ctx context.Context, req *proto.DeleteTypeInWarehouseReq) (*proto.DeleteTypeInWarehouseRes, error) {
+	var typeInWarehouse *model.TypeInWarehouse
+	if err := g.db.Model(&model.TypeInWarehouse{}).Where("id = ?", req.Id).Delete(&typeInWarehouse).Error; err != nil {
+		return nil, err
+	}
+	return &proto.DeleteTypeInWarehouseRes{
+		Success: true,
+	}, nil
 }
 
 func (g *typeWarehouseGRPC) UpCount(ctx context.Context, req *proto.UpCountTypeInWarehouseReq) (*proto.UpCountTypeInWarehouseRes, error) {

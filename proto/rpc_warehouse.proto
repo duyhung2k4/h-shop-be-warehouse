@@ -93,13 +93,26 @@ message InsertTypeInWarehouseRes {
 message UpdateTypeInWarehouseReq {
     uint64 id = 1;
     uint64 count = 2;
+    string name = 3;
+    string hastag = 4;
+    float price = 5;
 }
 message UpdateTypeInWarehouseRes {
     uint64 id = 1;
     string productId = 2;
     uint64 count = 3;
+    string name = 4;
+    string hastag = 5;
+    float price = 6;
 }
-  
+
+message DeleteTypeInWarehouseReq {
+    uint64 id = 1;
+}
+message DeleteTypeInWarehouseRes {
+    bool success = 1;
+}
+
 message UpCountTypeInWarehouseReq {
     uint64 id = 1;
     uint64 amount = 2;
@@ -124,6 +137,7 @@ service TypeInWarehouseService {
     rpc GetTypeInWarehouseByProductId(GetTypeInWarehouseByProductIdReq) returns (GetTypeInWarehouseByProductIdRes) {}
     rpc Insert(InsertTypeInWarehouseReq) returns (InsertTypeInWarehouseRes) {}
     rpc Update(UpdateTypeInWarehouseReq) returns (UpdateTypeInWarehouseRes) {}
+    rpc Delete(DeleteTypeInWarehouseReq) returns (DeleteTypeInWarehouseRes) {}
     rpc UpCount(UpCountTypeInWarehouseReq) returns (UpCountTypeInWarehouseRes) {}
     rpc DownCount(DownCountTypeInWarehouseReq) returns (DownCountTypeInWarehouseRes) {}
 }
