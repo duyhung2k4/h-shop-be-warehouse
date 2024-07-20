@@ -45,7 +45,7 @@ func (g *warehouseGRPC) Insert(ctx context.Context, req *proto.InsertWarehouseRe
 	res := &proto.InsertWarehouseRes{
 		Id:        uint64(newWarehouse.ID),
 		ProductId: newWarehouse.ProductId,
-		Count:     0,
+		Count:     req.Count,
 	}
 
 	return res, nil
@@ -58,7 +58,7 @@ func (g *warehouseGRPC) Update(ctx context.Context, req *proto.UpdateWarehouseRe
 
 	if err := g.db.
 		Model(&model.Warehouse{}).
-		Where("id = ?", req.Id).
+		Where("product_id = ?", req.ProductId).
 		Updates(&newWarehouse).Error; err != nil {
 		return nil, err
 	}

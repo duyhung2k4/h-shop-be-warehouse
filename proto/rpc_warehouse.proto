@@ -22,6 +22,7 @@ message GetWarehouseByProductIdRes {
 
 message InsertWarehouseReq {
     string productId = 1;
+    uint64 count = 2;
 }
 message InsertWarehouseRes {
     uint64 id = 1;
@@ -30,7 +31,7 @@ message InsertWarehouseRes {
 }
 
 message UpdateWarehouseReq {
-    uint64 id = 1;
+    string productId = 1;
     uint64 count = 2;
 }
 message UpdateWarehouseRes {
